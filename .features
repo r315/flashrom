@@ -1,0 +1,7 @@
+FEATURES := yes
+FTDISUPPORT := yes
+FT232H := yes
+LINUX_MTD_SUPPORT := yes
+LINUX_SPI_SUPPORT := yes
+UTSNAME := yes
+CLOCK_GETTIME := yes
