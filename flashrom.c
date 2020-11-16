@@ -473,6 +473,19 @@ const struct programmer_entry programmer_table[] = {
 	},
 #endif
 
+#if CONFIG_BLUEPILL_SPI == 1
+	{
+		.name			= "bluepill_spi",
+		.type			= OTHER,
+					/* FIXME */
+		.devs.note		= "Costum programmer using bluepill board\n",
+		.init			= bluepill_spi_init,
+		.map_flash_region	= fallback_map,
+		.unmap_flash_region	= fallback_unmap,
+		.delay			= internal_delay,
+	},
+#endif
+
 	{0}, /* This entry corresponds to PROGRAMMER_INVALID. */
 };
 

@@ -699,6 +699,8 @@ CONFIG_JLINK_SPI ?= no
 # Disable wiki printing by default. It is only useful if you have wiki access.
 CONFIG_PRINT_WIKI ?= no
 
+CONFIG_BLUEPILL_SPI ?= yes
+
 # Disable all features if CONFIG_NOTHING=yes is given unless CONFIG_EVERYTHING was also set
 ifeq ($(CONFIG_NOTHING), yes)
   ifeq ($(CONFIG_EVERYTHING), yes)
@@ -959,6 +961,12 @@ PROGRAMMER_OBJS += buspirate_spi.o
 NEED_SERIAL += CONFIG_BUSPIRATE_SPI
 endif
 
+ifeq ($(CONFIG_BLUEPILL_SPI), yes)
+FEATURE_CFLAGS += -D'CONFIG_BLUEPILL_SPI=1'
+PROGRAMMER_OBJS += bluepill_spi.o
+NEED_SERIAL += CONFIG_BLUEPILL_SPI
+endif
+
 ifeq ($(CONFIG_DEDIPROG), yes)
 FEATURE_CFLAGS += -D'CONFIG_DEDIPROG=1'
 PROGRAMMER_OBJS += dediprog.o
@@ -1131,7 +1139,8 @@ ifeq ($(ARCH), x86)
 endif
 
 $(PROGRAM)$(EXEC_SUFFIX): $(OBJS)
-	$(CC) $(LDFLAGS) -o $(PROGRAM)$(EXEC_SUFFIX) $(OBJS) $(LIBS) $(PCILIBS) $(FEATURE_LIBS) $(USBLIBS) $(USB1LIBS) $(JAYLINKLIBS) $(NI845X_LIBS)
+	@echo "Linking" $@
+	@$(CC) $(LDFLAGS) -o $(PROGRAM)$(EXEC_SUFFIX) $(OBJS) $(LIBS) $(PCILIBS) $(FEATURE_LIBS) $(USBLIBS) $(USB1LIBS) $(JAYLINKLIBS) $(NI845X_LIBS)
 
 libflashrom.a: $(LIBFLASHROM_OBJS)
 	$(AR) rcs $@ $^
@@ -1143,7 +1152,8 @@ libflashrom.a: $(LIBFLASHROM_OBJS)
 TAROPTIONS = $(shell LC_ALL=C tar --version|grep -q GNU && echo "--owner=root --group=root")
 
 %.o: %.c .features
-	$(CC) -MMD $(CFLAGS) $(CPPFLAGS) $(FLASHROM_CFLAGS) $(FEATURE_CFLAGS) $(SCMDEF) -o $@ -c $<
+	@echo "Compiling" $<
+	@$(CC) -MMD $(CFLAGS) $(CPPFLAGS) $(FLASHROM_CFLAGS) $(FEATURE_CFLAGS) $(SCMDEF) -o $@ -c $<
 
 # Make sure to add all names of generated binaries here.
 # This includes all frontends and libflashrom.

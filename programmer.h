@@ -127,6 +127,9 @@ enum programmer {
 #if CONFIG_STLINKV3_SPI == 1
 	PROGRAMMER_STLINKV3_SPI,
 #endif
+#if CONFIG_BLUEPILL_SPI == 1
+	PROGRAMMER_BLUEPILL_SPI,
+#endif
 	PROGRAMMER_INVALID /* This must always be the last entry. */
 };
 
@@ -572,6 +575,12 @@ int jlink_spi_init(void);
 #if CONFIG_NI845X_SPI == 1
 int ni845x_spi_init(void);
 #endif
+
+/* bluepill_spi.c */
+#if CONFIG_BLUEPILL_SPI == 1
+int bluepill_spi_init(void);
+#endif
+
 
 /* flashrom.c */
 struct decode_sizes {

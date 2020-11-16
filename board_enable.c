@@ -1510,7 +1510,7 @@ static int intel_ich_gpio_set(int gpio, int raise)
 	struct pci_dev *dev;
 	uint16_t base;
 	uint32_t tmp;
-	int i, allowed;
+	int i = 0, allowed;
 
 	/* First, look for a known LPC bridge */
 	for (dev = pacc->devices; dev; dev = dev->next) {
