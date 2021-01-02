@@ -395,7 +395,11 @@ int serialport_write(const unsigned char *buf, unsigned int writecnt)
 #else
 		tmp = write(sp_fd, buf, writecnt);
 #endif
+#if IS_WINDOWS
+		if (tmp == (DWORD)-1) {
+#else
 		if (tmp == -1) {
+#endif
 			msg_perr("Serial port write error!\n");
 			return 1;
 		}
@@ -429,7 +433,11 @@ int serialport_read(unsigned char *buf, unsigned int readcnt)
 #else
 		tmp = read(sp_fd, buf, readcnt);
 #endif
+#if IS_WINDOWS
+		if (tmp == (DWORD)-1) {
+#else
 		if (tmp == -1) {
+#endif
 			msg_perr("Serial port read error!\n");
 			return 1;
 		}
@@ -491,7 +499,11 @@ int serialport_read_nonblock(unsigned char *c, unsigned int readcnt, unsigned in
 		rv = read(sp_fd, c + rd_bytes, readcnt - rd_bytes);
 		msg_pspew("read %zd bytes\n", rv);
 #endif
+#if IS_WINDOWS
+		if ((rv == (DWORD)-1) && (errno != EAGAIN)) {
+#else
 		if ((rv == -1) && (errno != EAGAIN)) {
+#endif
 			msg_perr_strerror("Serial port read error: ");
 			ret = -1;
 			break;
@@ -571,7 +583,11 @@ int serialport_write_nonblock(const unsigned char *buf, unsigned int writecnt, u
 		rv = write(sp_fd, buf + wr_bytes, writecnt - wr_bytes);
 		msg_pspew("wrote %zd bytes\n", rv);
 #endif
+#if IS_WINDOWS
+		if ((rv == (DWORD)-1) && (errno != EAGAIN)) {
+#else
 		if ((rv == -1) && (errno != EAGAIN)) {
+#endif
 			msg_perr_strerror("Serial port write error: ");
 			ret = -1;
 			break;

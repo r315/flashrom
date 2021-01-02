@@ -255,11 +255,13 @@ int bluepill_spi_init(void)
     bp_commbuf[0] = 'q';
     bp_commbuf[1] = '\n';
 
-    if ((ret = buspirate_sendrecv(bp_commbuf, 2, 0)))
+    if ((ret = buspirate_sendrecv(bp_commbuf, 2, 0))){
         return ret;
+	}
 
-	if ((ret = buspirate_wait_for_string(bp_commbuf, "bluepill>")))
+	if ((ret = buspirate_wait_for_string(bp_commbuf, "bluepill>"))){
 		return ret;
+	}
 
     msg_pdbg("bluepill detected!\n");
 
