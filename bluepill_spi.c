@@ -109,7 +109,7 @@ static int buspirate_sendrecv(unsigned char *buf, unsigned int writecnt,
 	
     return 0;
 }
-
+#if 0
 static int buspirate_wait_for_string(unsigned char *buf, const char *key)
 {
 	unsigned int keylen = strlen(key);
@@ -124,7 +124,7 @@ static int buspirate_wait_for_string(unsigned char *buf, const char *key)
 	}
 	return ret;
 }
-
+#endif
 static int bluepill_spi_send_command(struct flashctx *flash, unsigned int writecnt, unsigned int readcnt,
 					 const unsigned char *writearr, unsigned char *readarr)
 {
@@ -193,9 +193,8 @@ static int bluepill_spi_shutdown(void *data)
 	int ret = 0;
 	/* No need to allocate a buffer here, we know that bp_commbuf is at least DEFAULT_BUFSIZE big. */
 
-	/* Exit raw SPI mode (enter raw bitbang mode) */
-	bp_commbuf[0] = 'q';
-	buspirate_sendrecv(bp_commbuf, 1, 0);
+	//bp_commbuf[0] = 'q';
+	//buspirate_sendrecv(bp_commbuf, 1, 0);
 	
 	/* Shut down serial port communication */
 	ret = serialport_shutdown(NULL);
@@ -251,7 +250,7 @@ int bluepill_spi_init(void)
 		bp_commbuf = NULL;
 		return 1;
 	}
-
+#if 0
     bp_commbuf[0] = 'q';
     bp_commbuf[1] = '\n';
 
@@ -274,7 +273,7 @@ int bluepill_spi_init(void)
 		return ret;
 
     msg_pdbg("bluepill in flashrom mode\n");
-
+#endif
     spi_master_busbluepill.max_data_read = 12;
 	spi_master_busbluepill.max_data_write = 12;
 	//spi_master_busbluepill.command = bluepill_spi_send_command;
